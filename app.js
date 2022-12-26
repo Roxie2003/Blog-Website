@@ -2,68 +2,71 @@
 
 const express = require("express");
 const ejs = require("ejs");
-const mongoose=require("mongoose");
-const _=require("lodash");
+const mongoose = require("mongoose");
+const _ = require("lodash");
 
-const homeStartingContent = "Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing.";
-const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Non diam phasellus vestibulum lorem sed. Platea dictumst quisque sagittis purus sit. Egestas sed sed risus pretium quam vulputate dignissim suspendisse. Mauris in aliquam sem fringilla. Semper risus in hendrerit gravida rutrum quisque non tellus orci. Amet massa vitae tortor condimentum lacinia quis vel eros. Enim ut tellus elementum sagittis vitae. Mauris ultrices eros in cursus turpis massa tincidunt dui.";
-const contactContent = "Scelerisque eleifend donec pretium vulputate sapien. Rhoncus urna neque viverra justo nec ultrices. Arcu dui vivamus arcu felis bibendum. Consectetur adipiscing elit duis tristique. Risus viverra adipiscing at in tellus integer feugiat. Sapien nec sagittis aliquam malesuada bibendum arcu vitae. Consequat interdum varius sit amet mattis. Iaculis nunc sed augue lacus. Interdum posuere lorem ipsum dolor sit amet consectetur adipiscing elit. Pulvinar elementum integer enim neque. Ultrices gravida dictum fusce ut placerat orci nulla. Mauris in aliquam sem fringilla ut morbi tincidunt. Tortor posuere ac ut consequat semper viverra nam libero.";
+const homeStartingContent =
+  "The strength of the team is each individual member. The strength of each member is the team. Take a look at our diverse team of innovative thinkers that want to make a difference.";
+const aboutContent =
+  "GES-COENGG, based in Nashik, is dedicated to the cause of student empowerment via education. It is well-known for its excellent teaching, collaborative research, industrial linkages, and large alumni network. To achieve excellence with total quality in all activities of lifelong learning is the main motive of Gokhale Education Society.";
+const contactContent =
+  "Gokhale Education Society's R. H. Sapat College of Engineering, Management Studies and Research, Nashik https://gdscgescoengg.live/contact.html";
 
 const app = express();
-const db=mongoose.connect("mongodb://localhost:27017/postsDB")
+const db = mongoose.connect(
+  "mongodb+srv://Ruchi:Roxie15@node-learn.am6ml.mongodb.net/postsDB?retryWrites=true&w=majority"
+);
 
-const postsSchema=new mongoose.Schema({
-  title:String,
-  body:String
-})
+const postsSchema = new mongoose.Schema({
+  title: String,
+  body: String,
+});
 
-const Post=mongoose.model('Post',postsSchema)
+const Post = mongoose.model("Post", postsSchema);
 
+app.set("view engine", "ejs");
 
-app.set('view engine', 'ejs');
-
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
-const posts=[];
+const posts = [];
 
-app.get("/",(req,res)=>{
-  Post.find({},function(err,posts){
-    res.render("home",{homeStartingContent,posts});
-  })
-  
+app.get("/", (req, res) => {
+  Post.find({}, function (err, posts) {
+    res.render("home", { homeStartingContent, posts });
+  });
 });
 
-app.get("/about",(req,res)=>{
-  res.render("about",{aboutContent});
+app.get("/about", (req, res) => {
+  res.render("about", { aboutContent });
 });
 
-app.get("/contact",(req,res)=>{
-  res.render("contact",{contactContent});
+app.get("/contact", (req, res) => {
+  res.render("contact", { contactContent });
 });
 
-app.get("/compose",(req,res)=>{
+app.get("/compose", (req, res) => {
   res.render("compose");
 });
 
-app.post("/compose",(req,res)=>{
-  const post=new Post({
-      title:req.body.postTitle,
-      body:req.body.postBody
-  })
-  post.save()
-  res.redirect("/")
+app.post("/compose", (req, res) => {
+  const post = new Post({
+    title: req.body.postTitle,
+    body: req.body.postBody,
+  });
+  post.save();
+  res.redirect("/");
 });
 
-app.get("/posts/:postName",(req,res)=>{
-  const requestedTitle=_.lowerCase(req.params.postName);
+app.get("/posts/:postName", (req, res) => {
+  const requestedTitle = _.lowerCase(req.params.postName);
 
-  Post.findOne({title:req.params.postName},function(err,post){
-    if(!err){
-      res.render("post",{post});
+  Post.findOne({ title: req.params.postName }, function (err, post) {
+    if (!err) {
+      res.render("post", { post });
     }
-  })
-})
+  });
+});
 
-app.listen(3000, function() {
+app.listen(8080, function () {
   console.log("Server started on port 3000");
 });
