@@ -49,18 +49,18 @@ app.get("/compose", (req, res) => {
 });
 
 app.post("/compose", (req, res) => {
-  const post = new Post({
-    title: req.body.postTitle,
-    body: req.body.postBody,
-  });
-  post.save();
+  if (req.body.postTitle !== "" && req.body.postBody !== "") {
+    const post = new Post({
+      title: req.body.postTitle,
+      body: req.body.postBody,
+    });
+    post.save();
+  }
   res.redirect("/");
 });
 
-app.get("/posts/:postName", (req, res) => {
-  const requestedTitle = _.lowerCase(req.params.postName);
-
-  Post.findOne({ title: req.params.postName }, function (err, post) {
+app.get("/posts/:postId", (req, res) => {
+  Post.findOne({ _id: req.params.postId }, function (err, post) {
     if (!err) {
       res.render("post", { post });
     }
