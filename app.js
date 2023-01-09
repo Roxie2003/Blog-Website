@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const _ = require("lodash");
 
 const homeStartingContent =
-  "The strength of the team is each individual member. The strength of each member is the team. Take a look at our diverse team of innovative thinkers that want to make a difference.";
+  "The strength of the team is each individual member. The strength of each member is the team. Take a look at our diverse team of innovative thinkers that want to make a difference..";
 const aboutContent =
   "GES-COENGG, based in Nashik, is dedicated to the cause of student empowerment via education. It is well-known for its excellent teaching, collaborative research, industrial linkages, and large alumni network. To achieve excellence with total quality in all activities of lifelong learning is the main motive of Gokhale Education Society.";
 const contactContent =
